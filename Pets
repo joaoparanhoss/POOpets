@@ -1,0 +1,70 @@
+package Testes;
+
+public class Pets {
+private int codigo;
+private String nome;
+private int peso;
+private boolean reproducao;
+private double preco;
+
+public Pets(int codigo, String nome, int peso, boolean reproducao, double preco) {
+	super();
+	this.codigo = codigo;
+	this.nome = nome;
+	this.peso = peso;
+	this.reproducao = reproducao;
+	this.preco = preco;
+}
+
+public double aumentarValor(double preco) {
+	double novoValor = 0;
+	if(this.reproducao = true) {
+		System.out.println("Esse tipo de pet nao pode sofrer aumento no seu valor");
+	}else {
+		novoValor = this.preco * 1.05;
+	}
+	
+	
+	return novoValor;
+}
+
+public double getPreco() {
+	return preco;
+}
+
+public void setPreco(double preco) {
+	this.preco = preco;
+}
+
+public int getCodigo() {
+	return codigo;
+}
+
+public void setCodigo(int codigo) {
+	this.codigo = codigo;
+}
+
+public String getNome() {
+	return nome;
+}
+
+public void setNome(String nome) {
+	this.nome = nome;
+}
+
+public int getPeso() {
+	return peso;
+}
+
+public void setPeso(int peso) {
+	this.peso = peso;
+}
+
+public boolean isReproducao() {
+	return reproducao;
+}
+
+public void setReproducao(boolean reproducao) {
+	this.reproducao = reproducao;
+}
+}
