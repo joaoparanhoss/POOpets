@@ -1,0 +1,73 @@
+package Testes;
+import java.util.Scanner;
+
+public class Executora {
+	
+	public static void main(String[] args) {
+	PetsCRUD pets = new PetsCRUD();
+	pets.ConnectionDB();
+	Scanner scanner = new Scanner(System.in);
+	
+	boolean continuar = true;
+
+    while (continuar) {
+        System.out.println("\n--- Menu de Gerenciamento de Pets ---");
+        System.out.println("1. Adicionar Pet");
+        System.out.println("2. Atualizar Pet");
+        System.out.println("3. Remover Pet");
+        System.out.println("4. Listar Pets");
+        System.out.println("5. Aumentar Preco");
+        System.out.println("6. Sair");
+        System.out.print("Escolha uma opção: ");
+        int opcao = scanner.nextInt();
+
+        switch (opcao) {
+            case 1:
+            	System.out.println("Digite o codigo do pet: ");
+            	int codigo = scanner.nextInt();
+            	System.out.println("Digite o nome do pet: ");
+            	String nome = scanner.next();
+            	System.out.println("Digite o peso do pet: ");
+            	int peso = scanner.nextInt();
+            	System.out.println("Pet para reprodução (true/false): ");
+            	boolean reproducao = scanner.nextBoolean();
+            	System.out.println("Digite o valor do pet");
+            	double preco = scanner.nextDouble();
+            	Pets e = new Pets(codigo, nome, peso, reproducao, preco);
+            	pets.createPet(e);
+                break;
+            case 2:
+            	System.out.println("Digite o codigo do pet que deseja editar: ");
+            	int codigo1 = scanner.nextInt();
+            	System.out.println("Digite o novo nome do pet: ");
+            	String nome1 = scanner.next();
+            	System.out.println("Digite o novo peso do pet: ");
+            	int peso1 = scanner.nextInt();
+            	System.out.println("Pet para reprodução (true/false): ");
+            	boolean reproducao1 = scanner.nextBoolean();
+            	pets.updatePet(codigo1,nome1,peso1,reproducao1);
+                break;
+            case 3:
+            	System.out.println("Digite o codigo do pet que deseja remover: ");
+            	int codigo2 = scanner.nextInt();
+               pets.deletePet(codigo2);
+                break;
+            case 4:
+               pets.readPet();
+                break;
+            case 5:
+            	System.out.println("Digite o codigo do pet que deseja aumentar: ");            
+            	int codigo3 = scanner.nextInt();
+            	pets.updatePetPreco(codigo3);
+                 break;
+            case 6:
+                continuar = false;
+                System.out.println("Saindo...");
+                break;
+            default:
+                System.out.println("Opção inválida.");
+        }
+     }
+    scanner.close();    }
+
+	}
