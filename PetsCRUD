@@ -1,0 +1,135 @@
+package Testes;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+ 
+public class PetsCRUD {
+	Connection connect = null;
+	
+	public void ConnectionDB() {
+	connect = ConectionMySQL.getConectionMySQL();
+	}
+	public void createPet(Pets e) {
+		String sql = "insert into pets values (?, ?, ?, ?, ?)";
+		try {
+			PreparedStatement pst;
+			pst = connect.prepareStatement(sql);
+			pst.setInt(1, e.getCodigo());
+			pst.setString(2, e.getNome());
+			pst.setInt(3, e.getPeso());
+			pst.setBoolean(4, e.isReproducao());
+			pst.setDouble(5, e.getPreco());
+			pst.executeUpdate();
+			System.out.println("Pet cadastrado!");
+			
+		}catch(SQLException ex){
+			System.out.println("Pet cadastrado!" + ex);
+		}
+	}
+ 
+	public void readPet() {
+		String sql = "SELECT codigo, nome, peso, reproducao, preco FROM pets";
+		try {
+			PreparedStatement pst;
+			pst = connect.prepareStatement(sql);
+			ResultSet rst = pst.executeQuery();
+			while(rst.next()) {
+				int codigo = rst.getInt("codigo");
+				String nome = rst.getString(2);
+				String peso = rst.getString(3);
+				boolean reproducao = rst.getBoolean(4);
+				double preco = rst.getDouble(5);
+				System.out.printf("Código: %d \n Nome: %s \n Peso: %skg \n Reprodução: %s \n Preco: %s \n", codigo, nome, peso, reproducao,preco);
+			}
+		}catch(SQLException se){
+			System.out.println("Erro ao consultar Pet " + se);
+		}
+	}
+	
+	public void updatePet(int codigo, String nome, int peso, boolean reproducao) {
+		String sql = "UPDATE pets SET nome = ?, peso = ?, reproducao = ? WHERE codigo = ?";
+		try {
+			PreparedStatement pst;
+			pst = connect.prepareStatement(sql);
+			pst.setString(1, nome);
+			pst.setInt(4, codigo);
+			pst.setInt(2, peso);
+			pst.setBoolean(3, reproducao);
+			
+			
+			int ret = pst.executeUpdate();
+			if(ret > 0) {
+				System.out.printf("Pet atualizado, novo nome: %s",nome);
+			}
+			else{
+				System.out.println("Não foi possivel alterar registro do Pet");
+			}
+		}catch(SQLException se) {
+			System.out.println("Erro ao atualizar o registro do Pet" + se);
+			
+		}
+	
+	}
+	public void deletePet(int codigo) {
+		String sql = "DELETE FROM pets WHERE codigo = ?";
+		try {
+			PreparedStatement pst;
+			pst = connect.prepareStatement(sql);
+			pst.setInt(1, codigo);
+			int ret = pst.executeUpdate();
+			if(ret > 0) {
+				System.out.printf("Pet excluido com sucesso");
+			}
+			else{
+				System.out.println("Não foi possivel excluir registro Pet");
+			}
+			
+			}catch(SQLException se){
+				System.out.println("Erro ao excluir registro Pet" + se);
+				}
+			}
+		
+	public void updatePetPreco(int codigo) {
+	    String selectSql = "SELECT preco, reproducao FROM pets WHERE codigo = ?";
+	    String updateSql = "UPDATE pets SET preco = ? WHERE codigo = ?";
+
+	    try (
+	        PreparedStatement selectPst = connect.prepareStatement(selectSql);
+	        PreparedStatement updatePst = connect.prepareStatement(updateSql)
+	    ) {
+	        
+	        selectPst.setInt(1, codigo);
+	        ResultSet rs = selectPst.executeQuery();
+
+	        if (rs.next()) {
+	            double precoAtual = rs.getDouble("preco");
+	            boolean isReproducao = rs.getBoolean("reproducao");
+
+	            if (!isReproducao) {
+	                precoAtual *= 1.05;
+	            }
+
+	           
+	            updatePst.setDouble(1, precoAtual);
+	            updatePst.setInt(2, codigo);
+
+	            int ret = updatePst.executeUpdate();
+	            if (ret > 0) {
+	                System.out.printf("Peso do Pet atualizado para: %.2f%n", precoAtual);
+	            } else {
+	                System.out.println("Não foi possível atualizar o peso do Pet");
+	            }
+	        } else {
+	            System.out.println("Pet com o código especificado não encontrado.");
+	        }
+	    } catch (SQLException se) {
+	        System.out.println("Erro ao atualizar o peso do Pet: " + se.getMessage());
+	    }
+	}
+
+	}
+	
+
+	
